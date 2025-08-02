@@ -5,7 +5,9 @@ import (
 	"log"
 )
 
-func Handle(next http.Handler) http.Handler {
+type {{.Name}} struct{}
+
+func ({{.NameVar}} *{{.Name}}) Handle(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Println("[{{.Name}}]", r.Method, r.URL.Path)
 		next.ServeHTTP(w, r)

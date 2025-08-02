@@ -4,7 +4,6 @@ import (
 	"flag"
 	"os"
 	"os/exec"
-	"text/template"
 )
 
 func HandleInit(args []string) {
@@ -58,63 +57,19 @@ func HandleInit(args []string) {
 
 	// You can also create a README.md or other initial files here
 	readmeFile := module + "/README.md"
-	readmeContent := "# " + module + "\n\nThis is the initial setup for the " + module + " module.\n"
-	err := os.WriteFile(readmeFile, []byte(readmeContent), 0644)
+	readmeTmplFile := templatesFolder + "/readme.tmpl"
+	path, err := ParseTemplate(readmeTmplFile, readmeFile, map[string]string{"Module": module})
 	if err != nil {
-		println("Error creating README.md:", err.Error())
-		return
-	}
-
-	//create main.go based on template module.tmpl in gerard/templates
-	tmplModuleFile := templatesFolder + "/module.tmpl"
-	if _, err := os.Stat(tmplModuleFile); os.IsNotExist(err) {
-		println("Error: module template not found:", tmplModuleFile)
-		return
-	}
-	outFile := module + "/main.go"
-	tmpl, err := template.ParseFiles(tmplModuleFile)
-
-	if err != nil {
-		println("Error parsing template:", err.Error())
-		return
-	}
-
-	file, err := os.Create(outFile)
-	if err != nil {
-		println("Error creating main.go:", err.Error())
-		return
-	}
-
-	defer file.Close()
-	err = tmpl.Execute(file, map[string]string{"Module": module})
-
-	if err != nil {
-		println("Error executing template:", err.Error())
+		println("Error creating "+path+":", err.Error())
 		return
 	}
 
 	//create routes.go based on template route.tmpl in gerard/templates
 	routesFile := routes + "/routes.go"
 	routesTmplFile := templatesFolder + "/route.tmpl"
-
-	if _, err := os.Stat(routesTmplFile); os.IsNotExist(err) {
-		println("Error: routes template not found:", routesTmplFile)
-		return
-	}
-	routesTmpl, err := template.ParseFiles(routesTmplFile)
+	path, err = ParseTemplate(routesTmplFile, routesFile, map[string]string{"Module": module})
 	if err != nil {
-		println("Error parsing routes template:", err.Error())
-		return
-	}
-	routesOut, err := os.Create(routesFile)
-	if err != nil {
-		println("Error creating routes.go:", err.Error())
-		return
-	}
-	defer routesOut.Close()
-	err = routesTmpl.Execute(routesOut, map[string]string{"Module": module})
-	if err != nil {
-		println("Error executing routes template:", err.Error())
+		println("Error creating "+path+":", err.Error())
 		return
 	}
 
@@ -140,81 +95,35 @@ func HandleInit(args []string) {
 	// create a .gitignore file from the template in gerard/templates
 	gitignoreFile := module + "/.gitignore"
 	gitignoreTmplFile := templatesFolder + "/gitignore.tmpl"
-	if _, err := os.Stat(gitignoreTmplFile); os.IsNotExist(err) {
-		println("Error: .gitignore template not found:", gitignoreTmplFile)
-		return
-	}
-	gitignoreTmpl, err := template.ParseFiles(gitignoreTmplFile)
+	path, err = ParseTemplate(gitignoreTmplFile, gitignoreFile, map[string]string{"Module": module})
 	if err != nil {
-		println("Error parsing .gitignore template:", err.Error())
-		return
-	}
-	gitignoreOut, err := os.Create(gitignoreFile)
-	if err != nil {
-		println("Error creating .gitignore:", err.Error())
-		return
-	}
-
-	defer gitignoreOut.Close()
-	err = gitignoreTmpl.Execute(gitignoreOut, map[string]string{"Module": module})
-	if err != nil {
-		println("Error executing .gitignore template:", err.Error())
+		println("Error creating "+path+":", err.Error())
 		return
 	}
 
 	//create a Dockerfile from the template in gerard/templates
 	dockerfile := docker + "/Dockerfile"
 	dockerTmplFile := templatesFolder + "/dockerfile.tmpl"
-	if _, err := os.Stat(dockerTmplFile); os.IsNotExist(err) {
-		println("Error: Dockerfile template not found:", dockerTmplFile)
-		return
-	}
-	dockerTmpl, err := template.ParseFiles(dockerTmplFile)
+	path, err = ParseTemplate(dockerTmplFile, dockerfile, map[string]string{"Module": module})
 	if err != nil {
-		println("Error parsing Dockerfile template:", err.Error())
-		return
-	}
-	dockerOut, err := os.Create(dockerfile)
-	if err != nil {
-		println("Error creating Dockerfile:", err.Error())
-		return
-	}
-	defer dockerOut.Close()
-	err = dockerTmpl.Execute(dockerOut, map[string]string{"Module": module})
-	if err != nil {
-		println("Error executing Dockerfile template:", err.Error())
+		println("Error creating "+path+":", err.Error())
 		return
 	}
 
 	// create env example file
 	envExampleFile := module + "/.env.example"
-	envExampleContent := "DB_HOST=localhost\nDB_PORT=5432\nDB_USER=user\nDB_PASSWORD=password\n"
-	err = os.WriteFile(envExampleFile, []byte(envExampleContent), 0644)
+	envExampleTmplFile := templatesFolder + "/env-example.tmpl"
+	path, err = ParseTemplate(envExampleTmplFile, envExampleFile, map[string]string{"Module": module})
 	if err != nil {
-		println("Error creating .env.example:", err.Error())
+		println("Error creating "+path+":", err.Error())
 		return
 	}
 	// create a config file from the template in gerard/templates
 	configFile := configs + "/config.go"
 	configTmplFile := templatesFolder + "/config.tmpl"
-	if _, err := os.Stat(configTmplFile); os.IsNotExist(err) {
-		println("Error: config template not found:", configTmplFile)
-		return
-	}
-	configTmpl, err := template.ParseFiles(configTmplFile)
+	path, err = ParseTemplate(configTmplFile, configFile, map[string]string{"Module": module})
 	if err != nil {
-		println("Error parsing config template:", err.Error())
-		return
-	}
-	configOut, err := os.Create(configFile)
-	if err != nil {
-		println("Error creating config.go:", err.Error())
-		return
-	}
-	defer configOut.Close()
-	err = configTmpl.Execute(configOut, map[string]string{"Module": module})
-	if err != nil {
-		println("Error executing config template:", err.Error())
+		println("Error creating "+path+":", err.Error())
 		return
 	}
 

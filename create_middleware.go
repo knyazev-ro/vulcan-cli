@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"text/template"
 )
 
 func HandleCreateMiddleware(args []string) {
@@ -24,28 +23,19 @@ func HandleCreateMiddleware(args []string) {
 	module = allArgs[1]
 	name := allArgs[0]
 
+	nameCamalCase, nameVar := CreateStructNameAndVar(name)
 	data := map[string]string{
-		"Package": module,
-		"Name":    name,
+		"Name":    nameCamalCase,
+		"NameVar": nameVar,
 	}
 
 	// Создаём директорию если нет
 	os.MkdirAll(module+block, 0755)
 	outFile := fmt.Sprintf("%s%s/%s.go", module, block, strings.ToLower(name))
-	tmpl, err := template.ParseFiles(tmplFile) // gerard/templates//middleware.tmpl
+	path, err := ParseTemplate(tmplFile, outFile, data)
 	if err != nil {
-		panic(err)
-	}
-
-	out, err := os.Create(outFile)
-	if err != nil {
-		panic(err)
-	}
-	defer out.Close()
-
-	err = tmpl.Execute(out, data)
-	if err != nil {
-		panic(err)
+		println("Error creating "+path+":", err.Error())
+		return
 	}
 
 	fmt.Printf("Created middleware: %s\n", outFile)
