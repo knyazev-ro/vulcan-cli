@@ -25,7 +25,7 @@ With **gerard**, you can initialize new modules, add controllers, and inject mid
 ### 📦 Step 1: Download or clone `gerard` into the root of your Go project
 
 ```bash
-git clone https://github.com/yourname/gerard.git
+git clone https://github.com/knyazev-ro/gerard-cli.git
 ````
 
 *Or just copy the `gerard/` folder into your Go project.*
