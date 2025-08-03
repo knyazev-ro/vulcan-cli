@@ -30,6 +30,8 @@ func main() {
 		HandleCreateConfig(os.Args)
 	case "create:init":
 		HandleInit(os.Args)
+	case "remove:module":
+		HandleRemoveModule(os.Args)
 	default:
 		fmt.Println("Unknown command:", command)
 		return
