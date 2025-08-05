@@ -1,18 +1,12 @@
 package main
 
 import (
-	"flag"
 	"os"
 )
 
 func HandleRemoveModule(args []string) {
 
-	var module string
-	flagSet := flag.NewFlagSet("args", flag.ContinueOnError)
-	flagSet.Parse(args[2:])
-
-	names := flagSet.Args()
-	module = names[0]
+	module := args[0]
 
 	if module == "" {
 		println("Module name is required")

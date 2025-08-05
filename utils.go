@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"regexp"
 	"strings"
 	"text/template"
 
@@ -54,4 +55,18 @@ func CreateStructNameAndVar(name string) (string, string) {
 	}
 
 	return data["Name"], data["NameVar"]
+}
+
+func ValidateName(module string) (string, error) {
+
+	module = strings.TrimSpace(module)
+	module = strings.ToLower(module)
+
+	pattern := `^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$`
+	re := regexp.MustCompile(pattern)
+	if !re.MatchString(module) {
+		return "", os.ErrInvalid
+	}
+
+	return module, nil
 }

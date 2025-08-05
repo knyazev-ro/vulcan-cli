@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 )
 
@@ -9,26 +10,31 @@ func HandleRunCommand(args []string) {
 		fmt.Println("Usage: create:{middleware|controller} {Name} {Module}")
 		return
 	}
+
+	flagSet := flag.NewFlagSet("args", flag.ContinueOnError)
+	flagSet.Parse(args[2:])
+	argsArr := flagSet.Args()
+
 	command := args[1]
 	switch command {
 	case "create:middleware":
-		HandleCreateMiddleware(args)
+		HandleCreateMiddleware(argsArr)
 	case "create:controller":
-		HandleCreateController(args)
+		HandleCreateController(argsArr)
 	case "create:repository":
-		HandleCreateRepository(args)
+		HandleCreateRepository(argsArr)
 	case "create:model":
-		HandleCreateModel(args)
+		HandleCreateModel(argsArr)
 	case "create:interface":
-		HandleCreateInterface(args)
+		HandleCreateInterface(argsArr)
 	case "create:service":
-		HandleCreateService(args)
+		HandleCreateService(argsArr)
 	case "create:config":
-		HandleCreateConfig(args)
-	case "create:init":
-		HandleInit(args)
+		HandleCreateConfig(argsArr)
+	case "create:module":
+		HandleCreateModule(argsArr)
 	case "remove:module":
-		HandleRemoveModule(args)
+		HandleRemoveModule(argsArr)
 	default:
 		fmt.Println("Unknown command:", command)
 		return

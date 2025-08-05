@@ -1,13 +1,12 @@
 package main
 
 import (
-	"flag"
 	"os"
 	"os/exec"
 	"path/filepath"
 )
 
-func HandleInit(args []string) {
+func HandleCreateModule(args []string) {
 
 	settings := LoadSettings()
 	if settings == nil {
@@ -18,20 +17,18 @@ func HandleInit(args []string) {
 	templates := settings.Templates
 	directories := settings.GeneratedModuleFileStructure
 
-	flagSet := flag.NewFlagSet("args", flag.ContinueOnError)
-	flagSet.Parse(args[2:])
-	allArgs := flagSet.Args()
-
-	if len(allArgs) < 1 {
+	if len(args) < 1 {
 		println("Error: missing module name")
 		return
 	}
 
-	module := allArgs[0]
-	if module == "" {
-		println("Error: module name cannot be empty")
-		return
+	module := args[0]
+
+	module, err := ValidateName(module)
+	if err != nil {
+		println("Erro: invalid module name:", err.Error())
 	}
+
 	println("Initializing module:", module)
 	src := filepath.Join(module, directories.Src)
 	tests := filepath.Join(module, directories.Tests)

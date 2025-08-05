@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -26,13 +25,8 @@ func HandleCreateConfig(args []string) {
 	directories := settings.GeneratedModuleFileStructure
 	tmplFile := templates.Config
 
-	var module string
-	flagSet := flag.NewFlagSet("args", flag.ContinueOnError)
-	flagSet.Parse(args[2:])
-
-	names := flagSet.Args()
-	module = names[1]
-	name := names[0]
+	module := args[1]
+	name := args[0]
 
 	nameCamalCase, nameVar := CreateStructNameAndVar(name)
 	data := map[string]string{

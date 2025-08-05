@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -25,17 +24,12 @@ func HandleCreateMiddleware(args []string) {
 	directories := settings.GeneratedModuleFileStructure
 	tmplFile := templates.Middleware
 
-	var module string
-	flagSet := flag.NewFlagSet("args", flag.ContinueOnError)
-	flagSet.Parse(args[2:])
-	allArgs := flagSet.Args()
-
-	if len(allArgs) < 2 {
+	if len(args) < 2 {
 		fmt.Println("Error: missing fields")
 		return
 	}
-	module = allArgs[1]
-	name := allArgs[0]
+	module := args[1]
+	name := args[0]
 
 	nameCamalCase, nameVar := CreateStructNameAndVar(name)
 	data := map[string]string{
