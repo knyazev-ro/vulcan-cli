@@ -27,10 +27,11 @@ templates:
   readme: "gerard-cli/templates/readme.tmpl"
   route: "gerard-cli/templates/route.tmpl"
   env-example: "gerard-cli/templates/env-example.tmpl"
+  github-workflows: "gerard-cli/templates/github-workflows.tmpl"
 
 generated-file-structure:
       docs: "docs"
-      scripts: "scripts"
+      scripts: ".scripts"
       configs: "configs"
       config_utils: "configs/utils"
       tests: "tests"
@@ -45,3 +46,4 @@ generated-file-structure:
       middlewares: "src/middlewares"
       controllers: "src/controllers"
       repositories: "src/repositories"
+      github-workflows: ".github/workflows"

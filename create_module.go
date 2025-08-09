@@ -4,6 +4,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 func HandleCreateModule(args []string) {
@@ -37,6 +38,7 @@ func HandleCreateModule(args []string) {
 	configs := filepath.Join(module, directories.Configs)
 	docs := filepath.Join(module, directories.Docs)
 	config_utils := filepath.Join(module, directories.ConfigUtils)
+	githubWorkflows := filepath.Join(module, directories.GithubWorkflows)
 
 	middlewares := filepath.Join(module, directories.Middlewares)
 	controllers := filepath.Join(module, directories.Controllers)
@@ -56,6 +58,7 @@ func HandleCreateModule(args []string) {
 
 	os.MkdirAll(configs, 0755)
 	os.MkdirAll(config_utils, 0755)
+	os.MkdirAll(githubWorkflows, 0755)
 
 	os.MkdirAll(interfaces, 0755)
 	os.MkdirAll(models, 0755)
@@ -70,7 +73,16 @@ func HandleCreateModule(args []string) {
 	// You can also create a main.go or other initial files here
 	mainFile := module + "/main.go"
 	mainTmplFile := templates.Module
-	path, err := ParseTemplate(mainTmplFile, mainFile, map[string]string{"Module": module})
+	path, err := ParseTemplate(mainTmplFile, mainFile, map[string]string{"Route": strings.Join(strings.Split(routes, "\\"), "/")})
+	if err != nil {
+		println("Error creating "+path+":", err.Error())
+		return
+	}
+
+	// You can also create a githubWorkflows or other initial files here
+	githubWorkflowFile := githubWorkflows + "/action.yaml"
+	githubWorkflowTmplFile := templates.GithubWorkflows
+	path, err = ParseTemplate(githubWorkflowTmplFile, githubWorkflowFile, map[string]string{"Module": module})
 	if err != nil {
 		println("Error creating "+path+":", err.Error())
 		return
