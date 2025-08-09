@@ -28,7 +28,11 @@ func HandleCreateInterface(args []string) {
 	module := args[1]
 	name := args[0]
 
-	nameCamalCase, _ := CreateStructNameAndVar(name)
+	nameCamalCase, _, name, err := Normalize(name)
+	if err != nil {
+		ErrorPrintln("Filename is invalid.")
+		return
+	}
 	data := map[string]string{
 		"Name": nameCamalCase,
 	}

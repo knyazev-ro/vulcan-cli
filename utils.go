@@ -6,6 +6,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/fatih/camelcase"
 	"github.com/fatih/color"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -20,6 +21,15 @@ func Contains[T any](arr []T, needle func(T) bool) int {
 	return -1
 }
 
+func Filter[T any](ss []T, callback func(T) bool) (ret []T) {
+	for _, s := range ss {
+		if callback(s) {
+			ret = append(ret, s)
+		}
+	}
+	return
+}
+
 func ParseTemplate(templatePath string, outputFilePath string, data interface{}, args []string) (string, error) {
 
 	isForce := Contains(args, func(x string) bool {
@@ -28,37 +38,58 @@ func ParseTemplate(templatePath string, outputFilePath string, data interface{},
 
 	//check if output directory exists, if it exists then nothing
 	if _, err := os.Stat(outputFilePath); !os.IsNotExist(err) && !isForce {
-		println("Warning: output file already exists:", outputFilePath)
+		WarningPrintln("Warning: output file already exists:", outputFilePath)
 		return outputFilePath, os.ErrExist
 	}
 
 	if _, err := os.Stat(templatePath); os.IsNotExist(err) {
-		println("Error: template not found:", templatePath)
+		ErrorPrintln("Error: template not found:", templatePath)
 		return "", err
 	}
 	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {
-		println("Error parsing template:", err.Error())
+		ErrorPrintln("Error parsing template:", err.Error())
 		return "", err
 	}
 
 	out, err := os.Create(outputFilePath)
 	if err != nil {
-		println("Error creating:", err.Error())
+		ErrorPrintln("Error creating:", err.Error())
 		return "", err
 	}
 
 	defer out.Close()
 	err = tmpl.Execute(out, data)
 	if err != nil {
-		println("Error executing template:", err.Error())
+		ErrorPrintln("Error executing template:", err.Error())
 		return "", err
 	}
 
 	return outputFilePath, nil
 }
 
-func CreateStructNameAndVar(name string) (string, string) {
+func Normalize(name string) (string, string, string, error) {
+
+	r := strings.NewReplacer(
+		"-", " ",
+		"_", " ",
+		"+", " ",
+		"\\", " ",
+		"|", " ",
+		"/", " ",
+	)
+	name = r.Replace(name)
+	nameSplit := strings.Join(strings.Fields(name), " ")
+	splitCamelCase := strings.Fields(strings.Join(camelcase.Split(nameSplit), " "))
+	name = strings.Join(splitCamelCase, "_")
+	name = strings.ToLower(name)
+
+	name, err := ValidateName(name)
+	if err != nil {
+		ErrorPrintln("Filename is invalid")
+		return "", "", "", err
+	}
+
 	splitName := strings.Split(name, "_")
 	for i, s := range splitName {
 		splitName[i] = cases.Title(language.English).String(s)
@@ -68,7 +99,7 @@ func CreateStructNameAndVar(name string) (string, string) {
 		"NameVar": strings.ToLower(splitName[0]) + strings.Join(splitName[1:], ""),
 	}
 
-	return data["Name"], data["NameVar"]
+	return data["Name"], data["NameVar"], name, nil
 }
 
 func ValidateName(module string) (string, error) {

@@ -29,7 +29,11 @@ func HandleCreateController(args []string) {
 	name := args[0]
 	module := args[1]
 
-	nameCamalCase, _ := CreateStructNameAndVar(name)
+	nameCamalCase, _, name, err := Normalize(name)
+	if err != nil {
+		ErrorPrintln("Filename is invalid.")
+		return
+	}
 	data := map[string]string{
 		"Name": nameCamalCase,
 	}

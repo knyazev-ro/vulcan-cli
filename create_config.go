@@ -28,7 +28,13 @@ func HandleCreateConfig(args []string) {
 	module := args[1]
 	name := args[0]
 
-	nameCamalCase, nameVar := CreateStructNameAndVar(name)
+	nameCamalCase, nameVar, name, err := Normalize(name)
+
+	if err != nil {
+		ErrorPrintln("Filename is invalid.")
+		return
+	}
+
 	data := map[string]string{
 		"Module":  module,
 		"Name":    nameCamalCase,
