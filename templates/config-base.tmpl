@@ -5,9 +5,10 @@ type Config struct {
 	// Server   ServerConfig
 }
 
-// New returns a new Config struct
-func New() *Config {
-	config := &Config{}
-	config.Database.Load()
-	return config
+var GlobalConfig Config
+
+// Init global configs
+func Init() {
+	GlobalConfig = Config{}
+	GlobalConfig.Database.Load()
 }

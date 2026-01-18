@@ -10,6 +10,7 @@ import (
 	_ "{{.Migrations}}"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"github.com/knyazev-ro/perturabo/cmd"
 	vulcanCfg "github.com/knyazev-ro/vulcan/config"
 	vulcanOrmDb "github.com/knyazev-ro/vulcan/orm/db"
@@ -34,6 +35,7 @@ func RegisterORM(dbC *configs.DatabaseConfig) {
 }
 
 func RegisterConfigs() {
+	_ = godotenv.Load()
 	configs.Init()
 	RegisterORM(&configs.GlobalConfig.Database)
 }
