@@ -1,11 +1,11 @@
 package main
 
 import (
-	"gerard/templates"
 	"os"
 	"regexp"
 	"strings"
 	"text/template"
+	"vulcan/templates"
 
 	"github.com/fatih/camelcase"
 	"github.com/fatih/color"

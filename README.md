@@ -1,9 +1,9 @@
-# Gerard — Go CLI для создания модульных микросервисов
+# Vulcan CLI — Go CLI для создания модульных микросервисов
 
-**Gerard** — лёгкий и понятный CLI-инструмент для быстрого scaffolding API-модулей на Go по паттерну MVC.
+**Vulcan** — лёгкий и понятный CLI-инструмент для быстрого scaffolding API-модулей на Go по паттерну MVC.
 Использует [Gorilla MUX](https://github.com/gorilla/mux) для маршрутизации.
 
-С Gerard можно создавать новые модули, добавлять контроллеры, сервисы, миддлвары и другие компоненты одной командой.
+С Vulcan можно создавать новые модули, добавлять контроллеры, сервисы, миддлвары и другие компоненты одной командой.
 
 ---
 
@@ -21,32 +21,32 @@
 
 ## Быстрый старт
 
-### 1. Клонируйте Gerard
+### 1. Клонируйте Vulcan
 
 ```bash
-git clone https://github.com/knyazev-ro/gerard-cli.git
+git clone https://github.com/knyazev-ro/vulcan-cli.git
 ```
 
-Или скопируйте папку `gerard/` в ваш проект.
+Или скопируйте папку `vulcan/` в ваш проект.
 
 ---
 
 ### 2. Соберите CLI
 
 ```bash
-cd gerard
-go build -o ../gerard.exe .
+cd vulcan
+go build -o ../vulcan.exe .
 cd ..
 ```
 
-В корне проекта появится `gerard.exe`.
+В корне проекта появится `vulcan.exe`.
 
 ---
 
-### 3. Используйте команды Gerard
+### 3. Используйте команды Vulcan
 
 ```bash
-gerard.exe create:module <module_name>
+vulcan.exe create:module <module_name>
 ```
 
 Создаёт новый модуль с базовой структурой и шаблонами.
@@ -56,29 +56,29 @@ gerard.exe create:module <module_name>
 ## Доступные команды
 
 ```plaintext
-gerard.exe create:module <module_name>                   - Создать новый модуль
-gerard.exe create:controller <name> <module>            - Добавить контроллер
-gerard.exe create:middleware <name> <module>            - Добавить middleware
-gerard.exe create:model <name> <module>                 - Создать модель
-gerard.exe create:repository <name> <module>            - Создать репозиторий
-gerard.exe create:service <name> <module>               - Создать сервис
-gerard.exe create:interface <name> <module>             - Создать интерфейс
-gerard.exe create:config <name> <module>                - Создать конфиг
-gerard.exe create:test <name> <module>                  - Создать тест
-gerard.exe remove:module <module_name>                  - Удалить модуль
+vulcan.exe create:module <module_name>                   - Создать новый модуль
+vulcan.exe create:controller <name> <module>            - Добавить контроллер
+vulcan.exe create:middleware <name> <module>            - Добавить middleware
+vulcan.exe create:model <name> <module>                 - Создать модель
+vulcan.exe create:repository <name> <module>            - Создать репозиторий
+vulcan.exe create:service <name> <module>               - Создать сервис
+vulcan.exe create:interface <name> <module>             - Создать интерфейс
+vulcan.exe create:config <name> <module>                - Создать конфиг
+vulcan.exe create:test <name> <module>                  - Создать тест
+vulcan.exe remove:module <module_name>                  - Удалить модуль
 
-gerard.exe help                                         - Показать справку
+vulcan.exe help                                         - Показать справку
 
 Пример использования:
 
-gerard.exe create:controller user blog --force
+vulcan.exe create:controller user blog --force
 ```
 
 ---
 
 ## Настройка команд и структуры проекта
 
-Файл `gerard-cli/settings.yaml` позволяет управлять доступными командами, шаблонами и структурой проекта:
+Файл `vulcan-cli/settings.yaml` позволяет управлять доступными командами, шаблонами и структурой проекта:
 
 ```yaml
 commands:
@@ -138,7 +138,7 @@ generated-file-structure:
 
 ```
 your_project/
-├── gerard.exe
+├── vulcan.exe
 ├── <module_name>/
 │   ├── src/
 │   │   ├── controllers/
@@ -165,7 +165,7 @@ your_project/
 ## Требования
 
 * Go 1.18 или выше.
-* Поддержка Windows (`gerard.exe`) или сборка для других платформ без ключа `-o`.
+* Поддержка Windows (`vulcan.exe`) или сборка для других платформ без ключа `-o`.
 
 ---
 
@@ -188,7 +188,7 @@ your_project/
 Пример:
 
 ```bash
-gerard.exe create:service payment_service shop --with-tests
+vulcan.exe create:service payment_service shop --with-tests
 ```
 
 Создаст:

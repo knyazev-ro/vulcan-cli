@@ -122,7 +122,7 @@ func HandleCreateModule(args []string) {
 		return
 	}
 
-	//create routes.go based on template route.tmpl in gerard/templates
+	//create routes.go based on template route.tmpl in vulcan/templates
 	routesFile := routes + "/routes.go"
 	routesTmplFile := templates.Route
 	path, err = ParseTemplate(routesTmplFile, routesFile, map[string]string{"Module": module}, args)
@@ -157,7 +157,7 @@ func HandleCreateModule(args []string) {
 		return
 	}
 
-	// create a .gitignore file from the template in gerard/templates
+	// create a .gitignore file from the template in vulcan/templates
 	gitignoreFile := module + "/.gitignore"
 	gitignoreTmplFile := templates.GitIgnore
 	path, err = ParseTemplate(gitignoreTmplFile, gitignoreFile, map[string]string{"Module": module}, args)
@@ -166,7 +166,7 @@ func HandleCreateModule(args []string) {
 		return
 	}
 
-	//create a Dockerfile from the template in gerard/templates
+	//create a Dockerfile from the template in vulcan/templates
 	dockerfile := docker + "/Dockerfile"
 	dockerTmplFile := templates.Dockerfile
 	path, err = ParseTemplate(dockerTmplFile, dockerfile, map[string]string{"Module": module}, args)
@@ -183,7 +183,7 @@ func HandleCreateModule(args []string) {
 		ErrorPrintln("Error creating "+path+":", err.Error())
 		return
 	}
-	// create a config file from the template in gerard/templates
+	// create a config file from the template in vulcan/templates
 	configFile := configs + "/config.go"
 	configTmplFile := templates.ConfigBase
 	path, err = ParseTemplate(configTmplFile, configFile, map[string]string{"Module": module}, args)

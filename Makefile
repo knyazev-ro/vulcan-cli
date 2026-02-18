@@ -1,2 +1,2 @@
-gerard-compile:
-	go build -o ../gerard.exe  .
+vulcan-compile:
+	go build -o ../vulcan.exe  .

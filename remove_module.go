@@ -12,8 +12,8 @@ func HandleRemoveModule(args []string) {
 		ErrorPrintln("Module name is required")
 		return
 	}
-	if module == "gerard-cli" {
-		WarningPrintln("Cannot remove the 'gerard-cli'. Are you stupid?")
+	if module == "vulcan-cli" {
+		WarningPrintln("Cannot remove the 'vulcan-cli'. Are you stupid?")
 		return
 	}
 	err := os.RemoveAll(module)
