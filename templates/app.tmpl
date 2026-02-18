@@ -64,5 +64,12 @@ func Server(args []string) {
 	port := "8080"
 	hp := strings.Join([]string{host, port}, ":")
 	println(fmt.Sprintf("Vulcan server Up at %s. Ready to accept connections!", hp))
-	http.ListenAndServe(hp, r)
+	srv := &http.Server{
+		Handler: r,
+		Addr:    hp,
+		// Good practice: enforce timeouts for servers you create!
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+	srv.ListenAndServe()
 }
