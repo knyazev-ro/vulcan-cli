@@ -35,13 +35,14 @@ func HandleCreateController(args []string) {
 		return
 	}
 
-	nameCamalCase, _, name, err := Normalize(name)
+	nameCamalCase, nameVar, name, err := Normalize(name)
 	if err != nil {
 		ErrorPrintln("Filename is invalid.")
 		return
 	}
 	data := map[string]string{
 		"Name":     nameCamalCase,
+		"NameVar":  nameVar,
 		"FileName": name,
 		"Module":   module,
 	}

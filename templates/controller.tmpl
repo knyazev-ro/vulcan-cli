@@ -1,5 +1,18 @@
 package controllers
 
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
+
 type {{.Name}} struct {
 	//
+}
+
+func ({{.NameVar}} *{{.Name}}) Index(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "vars: %v\n", vars)
 }
