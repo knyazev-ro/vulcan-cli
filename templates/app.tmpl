@@ -13,14 +13,14 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	perturaboCmd "github.com/knyazev-ro/vulcan-migrate/cmd"
+	vulcanMigrateCmd "github.com/knyazev-ro/vulcan-migrate/cmd"
 	vulcanCfg "github.com/knyazev-ro/vulcan-orm/config"
 	vulcanOrmDb "github.com/knyazev-ro/vulcan-orm/orm/db"
 )
 
 // list of declarations
 func RegisterCli() {
-	perturaboCmd.Handle(os.Args)
+	vulcanMigrateCmd.Handle(os.Args)
 	// etc.
 }
 
