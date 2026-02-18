@@ -7,30 +7,36 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	_ "{{.Migrations}}"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/knyazev-ro/perturabo/cmd"
+	perturaboCmd "github.com/knyazev-ro/perturabo/cmd"
 	vulcanCfg "github.com/knyazev-ro/vulcan/config"
 	vulcanOrmDb "github.com/knyazev-ro/vulcan/orm/db"
 )
 
 // list of declarations
 func RegisterCli() {
-	cmd.Handle(os.Args)
+	perturaboCmd.Handle(os.Args)
 	// etc.
 }
 
 func RegisterORM(dbC *configs.DatabaseConfig) {
 	vulcanCfg.SetConfig(&vulcanCfg.Config{
-		Driver:   "postgres",
-		User:     dbC.Username,
-		Password: dbC.Password,
-		Host:     dbC.Host,
-		Port:     dbC.Port,
-		Database: dbC.Database,
+		Driver:   		 "postgres",
+		User:     		 dbC.Username,
+		Password: 		 dbC.Password,
+		Host:     		 dbC.Host,
+		Port:     		 dbC.Port,
+		Database: 		 dbC.Database,
+		SemaphoreLimit:  100,
+		MaxOpenConns:    100,
+		MaxIdleConns:    100,
+		ConnMaxLifetime: 30 * time.Minute, // 30 min.
+		ConnMaxIdleTime: 5 * time.Minute,  // 5 min.
 	})
 	vulcanOrmDb.Init()
 }
